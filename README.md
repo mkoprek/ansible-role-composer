@@ -2,19 +2,14 @@
 
 Composer Ansible Role
 =========
-
 Role for install composer package manager
 
 Requirements
 ------------
-
-- `php` - MUST be installed. Role mkoprek.phpfpm is strongly recommended.
-- `git` - MUST be installed
-
+- `php` - MUST be installed for run composer. You can use `mkoprek.phpfpm` role for install it.
 
 Role Variables
 --------------
-
 All defaults variables are available in defaults/main.yml:
 
 ```yaml
@@ -56,6 +51,10 @@ composer_home_path_add_to_path: false
 ```
 If you need to install any of packages globally you can add it here as a list
 Also if you need have access for those packages you can switch `composer_home_path_add_to_path` to true
+
+Requirements
+------------
+Role requires installed `git` and it will be installed during play.
 
 Example Playbook
 ----------------

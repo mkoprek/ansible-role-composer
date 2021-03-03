@@ -1,4 +1,9 @@
 ---
+- name: Ensure we have installed required packages
+  package:
+    name: "{{ item }}"
+  with_items: "{{ composer_required_packages }}"
+
 - name: Check if Composer bin is installed
   stat:
     path: "{{ composer_install_path }}/{{ composer_install_name }}"
@@ -20,8 +25,9 @@
   when: not composer_is_installed.stat.exists
 
 - name: Install composer by composer-installer.php
-  command: |
-    php composer-installer.php --install-dir={{ composer_install_path }} --filename={{ composer_install_name }} {% if composer_version %}--version={{ composer_version }}{%else%}{{ composer_latest_major_version }}{% endif %}
+  command: >
+    php composer-installer.php --install-dir={{ composer_install_path }} --filename={{ composer_install_name }}
+    {% if composer_version %}--version={{ composer_version }}{%else%}{{ composer_latest_major_version }}{% endif %}
   args:
     chdir: /tmp/
   when: not composer_is_installed.stat.exists or composer_version | length > 0

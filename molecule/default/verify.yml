@@ -28,6 +28,12 @@
         composer_global_packages:
           - symfony/console
 
+    - name: Check symfony/console is installed
+      lineinfile:
+        dest: "~/.composer/composer.lock"
+        line: symfony/console
+      register: symfony_console
+
     - name: Assert composer is installed
       assert:
         that:

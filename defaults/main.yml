@@ -17,3 +17,6 @@ composer_home_path_add_to_path: false
 composer_github_oauth: ''
 
 composer_global_packages: []
+
+composer_required_packages:
+  - git
