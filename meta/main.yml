@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: composer
   author: mkoprek
-  description: Role for install composer - a dependency manager for PHP
+  description: Ansible role for install composer - a dependency manager for PHP
 
   license: MIT
 

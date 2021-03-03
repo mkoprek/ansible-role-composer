@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/mkoprek/anisble-role-composer.svg?token=EFsRLGikq6SHNjdgZ3ra&branch=main)](https://travis-ci.com/mkoprek/anisble-role-composer)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-composer-blue.svg?style=flat)](https://galaxy.ansible.com/mkoprek/composer)
 
 Composer Ansible Role
 =========

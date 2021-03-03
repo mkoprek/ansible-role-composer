@@ -12,11 +12,13 @@ composer_home_path: ~/.composer
 composer_user: root
 composer_group: root
 
-composer_home_path_add_to_path: false
+composer_home_path_add_to_path: true
 
 composer_github_oauth: ''
 
 composer_global_packages: []
+
+composer_global_packages_add_to_path: false
 
 composer_required_packages:
   - git
