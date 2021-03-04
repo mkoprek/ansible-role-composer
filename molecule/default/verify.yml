@@ -1,0 +1,40 @@
+---
+- name: Verify
+  hosts: all
+
+  tasks:
+    - name: Check if role is installing composer
+      include_role:
+        name: ansible-role-composer
+
+    - name: Exclude composer
+      command: composer
+      register: composer_output
+
+    - name: Check if role is installing older compsoer version
+      include_role:
+        name: ansible-role-composer
+      vars:
+        composer_version: 1.10.20
+
+    - name: Get installed composer version
+      command: composer --version
+      register: composer_current_version
+
+    - name: Check if role can install global package
+      include_role:
+        name: ansible-role-composer
+      vars:
+        composer_global_packages:
+          - symfony/console
+
+    - name: Check symfony/console is installed
+      lineinfile:
+        dest: "~/.composer/composer.lock"
+        line: "symfony/console"
+
+    - name: Assert composer is installed
+      assert:
+        that:
+          - composer_output | length > 0
+          - composer_current_version.stdout_lines is search("1.10.20")

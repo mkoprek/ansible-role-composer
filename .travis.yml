@@ -1,0 +1,23 @@
+---
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+env:
+  matrix:
+    - MOLECULE_DISTRO: debian:buster
+    - MOLECULE_DISTRO: debian:stretch
+    - MOLECULE_DISTRO: ubuntu:focal
+    - MOLECULE_DISTRO: ubuntu:bionic
+
+install:
+  - pip install ansible molecule molecule-docker ansible-lint
+
+script:
+  - molecule test
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

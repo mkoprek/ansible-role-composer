@@ -1,0 +1,24 @@
+---
+composer_installer_url: https://getcomposer.org/installer
+composer_installed_sha_url: https://composer.github.io/installer.sig
+
+composer_version: ''
+composer_latest_major_version: --2
+
+composer_install_path: /usr/local/bin
+composer_install_name: composer
+
+composer_home_path: ~/.composer
+composer_user: root
+composer_group: root
+
+composer_home_path_add_to_path: true
+
+composer_github_oauth: ''
+
+composer_global_packages: []
+
+composer_global_packages_add_to_path: false
+
+composer_required_packages:
+  - git

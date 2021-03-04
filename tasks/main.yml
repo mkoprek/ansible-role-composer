@@ -1,0 +1,91 @@
+---
+- name: Ensure we have installed required packages
+  package:
+    name: "{{ item }}"
+  with_items: "{{ composer_required_packages }}"
+
+- name: Check if Composer bin is installed
+  stat:
+    path: "{{ composer_install_path }}/{{ composer_install_name }}"
+  register: composer_is_installed
+
+- name: Get composer installer signature checksum
+  uri:
+    url: "{{ composer_installed_sha_url }}"
+    return_content: true
+  register: composer_installer_sha256sum
+  when: not composer_is_installed.stat.exists
+
+- name: Download composer installer
+  get_url:
+    url: "{{ composer_installer_url }}"
+    dest: "/tmp/composer-installer.php"
+    mode: 0755
+    checksum: sha384:"{{ composer_installer_sha256sum.content }}"
+  when: not composer_is_installed.stat.exists
+
+- name: Install composer by composer-installer.php
+  command: >
+    php composer-installer.php --install-dir={{ composer_install_path }} --filename={{ composer_install_name }}
+    {% if composer_version %}--version={{ composer_version }}{%else%}{{ composer_latest_major_version }}{% endif %}
+  args:
+    chdir: /tmp/
+  when: not composer_is_installed.stat.exists or composer_version | length > 0
+
+- name: Upgrade composer if version is not set
+  command: composer selfupdate {{ composer_latest_major_version }}
+  changed_when: false
+  when: composer_is_installed.stat.exists and composer_version | length == 0
+
+- name: Ensure composer home directory exists
+  become: true
+  become_user: "{{ composer_user }}"
+  file:
+    path: "{{ composer_home_path }}"
+    owner: "{{ composer_user }}"
+    group: "{{ composer_group }}"
+    mode: 0755
+    state: directory
+
+- name: Export $COMPOSER_HOME
+  template:
+    src: "composer_home.sh.j2"
+    dest: "/etc/profile.d/composer_home.sh"
+    mode: 0644
+  when: composer_home_path_add_to_path | bool
+
+- name: Configure GitHub OAuth token
+  become: true
+  become_user: "{{ composer_user }}"
+  template:
+    src: "auth.json.j2"
+    dest: "{{ composer_home_path }}/auth.json"
+    owner: "{{ composer_user }}"
+    group: "{{ composer_group }}"
+    mode: 0644
+  when: composer_github_oauth | length > 0
+
+- name: Ensure packages composer.lock exists
+  stat:
+    path: "{{ composer_home_path }}/composer.lock"
+  register: composer_lock_exists
+
+- name: Install composer global packages
+  become: true
+  become_user: "{{ composer_user }}"
+  command: "composer global require {{ item }}"
+  with_items: "{{ composer_global_packages }}"
+  when: composer_global_packages | length > 0
+
+- name: Update composer global packages
+  command: composer update
+  args:
+    chdir: "{{ composer_home_path }}"
+  when: composer_lock_exists.stat.exists
+
+- name: Add global composer packages to $PATH
+  template:
+    src: "composer_path.sh.j2"
+    dest: "/etc/profile.d/composer_path.sh"
+    mode: 0644
+  when: composer_global_packages_add_to_path | bool
