@@ -47,7 +47,7 @@
     mode: 0755
     state: directory
 
-- name: Add $COMPOSER_HOME to $PATH
+- name: Export $COMPOSER_HOME
   template:
     src: "composer_home.sh.j2"
     dest: "/etc/profile.d/composer_home.sh"

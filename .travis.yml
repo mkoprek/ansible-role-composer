@@ -10,8 +10,8 @@ env:
   matrix:
     - MOLECULE_DISTRO: debian:buster
     - MOLECULE_DISTRO: debian:stretch
+    - MOLECULE_DISTRO: ubuntu:focal
     - MOLECULE_DISTRO: ubuntu:bionic
-    - MOLECULE_DISTRO: ubuntu:xenial
 
 install:
   - pip install ansible molecule molecule-docker ansible-lint
