@@ -7,6 +7,12 @@ Role for install composer package manager
 
 Requirements
 ------------
+This role requires Ansible 2.4 or higher and tested platforms:
+* ubuntu:focal
+* ubuntu:bionic
+* debian:buster
+* debian:stretch
+
 - `php` - MUST be installed for run composer. You can use `mkoprek.phpfpm` role for install it.
 
 Role Variables
