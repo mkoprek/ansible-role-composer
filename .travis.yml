@@ -14,7 +14,7 @@ env:
     - MOLECULE_DISTRO: ubuntu:bionic
 
 install:
-  - pip install ansible molecule molecule-docker ansible-lint
+  - pip install ansible molecule molecule-docker ansible-lint yamllint
 
 script:
   - molecule test
